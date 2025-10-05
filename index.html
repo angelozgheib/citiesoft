@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cities of Tomorrow</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+  <header>
+    <h1>🌎 Cities of Tomorrow</h1>
+    <p>Search a city, view live environmental data points, and AI predictions.</p>
+  </header>
+
+  <div class="container">
+    <div class="left-panel">
+      <div id="controls">
+        <div class="search-container">
+          <input type="text" id="cityInput" placeholder="Enter a city..." autocomplete="off" />
+          <div id="suggestions"></div>
+        </div>
+        <div class="button-group">
+          <button id="searchBtn" disabled>🔍 Search</button>
+          <button id="showDataBtn" disabled>📡 Show Data</button>
+          <button id="predictBtn" disabled>🤖 AI Solutions</button>
+        </div>
+
+        <!-- Layer Controls -->
+        <div id="layerControls" class="layer-controls">
+          <h3><i class="fas fa-layer-group"></i> Data Layers</h3>
+          <div class="layer-grid">
+            <div class="layer-toggle">
+              <input type="checkbox" id="solarLayerToggle" checked />
+              <label for="solarLayerToggle" class="layer-label">
+                <i class="fas fa-sun solar-icon"></i>
+                <span>Solar</span>
+              </label>
+            </div>
+            <div class="layer-toggle">
+              <input type="checkbox" id="tempLayerToggle" checked />
+              <label for="tempLayerToggle" class="layer-label">
+                <i class="fas fa-thermometer-half temp-icon"></i>
+                <span>Temperature</span>
+              </label>
+            </div>
+            <div class="layer-toggle">
+              <input type="checkbox" id="windLayerToggle" checked />
+              <label for="windLayerToggle" class="layer-label">
+                <i class="fas fa-wind wind-icon"></i>
+                <span>Wind</span>
+              </label>
+            </div>
+            <div class="layer-toggle">
+              <input type="checkbox" id="airQualityLayerToggle" checked />
+              <label for="airQualityLayerToggle" class="layer-label">
+                <i class="fas fa-smog air-icon"></i>
+                <span>Air Quality</span>
+              </label>
+            </div>
+            <div class="layer-toggle">
+              <input type="checkbox" id="windTurbineLayerToggle" />
+              <label for="windTurbineLayerToggle" class="layer-label">
+                <i class="fas fa-fan turbine-icon"></i>
+                <span>Wind Turbines</span>
+              </label>
+            </div>
+            <div class="layer-toggle">
+              <input type="checkbox" id="solutionLayerToggle" />
+              <label for="solutionLayerToggle" class="layer-label">
+                <i class="fas fa-lightbulb solution-icon"></i>
+                <span>AI Solutions</span>
+              </label>
+            </div>
+          </div>
+          <div class="layer-actions">
+            <button id="hideAllLayers" class="btn-outline">
+              <i class="fas fa-eye-slash"></i> Hide All
+            </button>
+            <button id="showSolutionLayers" class="btn-outline">
+              <i class="fas fa-robot"></i> Show AI Only
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section id="results">
+        <h2><i class="fas fa-chart-bar"></i> City Data Analysis</h2>
+        <div id="output">Welcome! Please enter a city to begin.</div>
+      </section>
+
+      <!-- Problem Reporting Form -->
+      <section id="report-section" class="form-container">
+        <h3><i class="fas fa-exclamation-triangle"></i> Report Environmental Problem</h3>
+        <p style="margin-bottom: 1.5rem; color: #7f8c8d;">Found an environmental issue? Report it directly to city officials and our team.</p>
+        
+        <form id="problemReportForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="userName">Your Name</label>
+              <input type="text" id="userName" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+              <label for="userEmail">Your Email</label>
+              <input type="email" id="userEmail" placeholder="Enter your email" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="problemType">Problem Type</label>
+            <select id="problemType" required>
+              <option value="">Select problem type</option>
+              <option value="air_quality">🌫️ Air Quality Issue</option>
+              <option value="pollution">🏭 Pollution Source</option>
+              <option value="waste">🗑️ Waste Management</option>
+              <option value="noise">🔊 Noise Pollution</option>
+              <option value="water">💧 Water Quality</option>
+              <option value="green_space">🌳 Lack of Green Space</option>
+              <option value="other">❓ Other Issue</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="problemLocation">Problem Location</label>
+            <input type="text" id="problemLocation" placeholder="e.g., Downtown, Residential Area, Park, etc." required>
+          </div>
+          
+          <div class="form-group">
+            <label for="problemDescription">Problem Description</label>
+            <textarea id="problemDescription" placeholder="Please describe the problem in detail..." rows="4" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Urgency Level</label>
+            <div class="urgency-options">
+              <label class="urgency-option">
+                <input type="radio" name="urgency" value="low" required>
+                <span class="urgency-label">Low</span>
+              </label>
+              <label class="urgency-option">
+                <input type="radio" name="urgency" value="medium">
+                <span class="urgency-label">Medium</span>
+              </label>
+              <label class="urgency-option">
+                <input type="radio" name="urgency" value="high">
+                <span class="urgency-label">High</span>
+              </label>
+              <label class="urgency-option">
+                <input type="radio" name="urgency" value="emergency">
+                <span class="urgency-label">Emergency</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" id="cancelReport" class="btn-secondary">Cancel</button>
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-paper-plane"></i> Submit Report
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="right-panel">
+      <div class="map-container">
+        <div id="map"></div>
+        <div class="map-overlay">
+          <h3><i class="fas fa-map-marked-alt"></i> Main Map</h3>
+          <p>Environmental data visualization</p>
+        </div>
+        <div class="wind-turbine-layer" id="windTurbineLayer">
+          <h4><i class="fas fa-fan"></i> Wind Turbine Suitability</h4>
+          <div class="turbine-legend">
+            <div class="legend-item">
+              <div class="legend-color legend-excellent"></div>
+              <span>Excellent</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color legend-good"></div>
+              <span>Good</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color legend-fair"></div>
+              <span>Fair</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color legend-poor"></div>
+              <span>Poor</span>
+            </div>
+          </div>
+        </div>
+        <div class="solution-layer" id="solutionLayer">
+          <h4><i class="fas fa-lightbulb"></i> AI Solution Types</h4>
+          <div class="solution-legend">
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #3498db;"></div>
+              <span>Wind Energy</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #ffc107;"></div>
+              <span>Solar Power</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #28a745;"></div>
+              <span>Urban Greening</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-color" style="background-color: #6c757d;"></div>
+              <span>Smart Mobility</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Solutions Section -->
+      <section id="ai-solutions-section">
+        <h2><i class="fas fa-robot"></i> AI-Generated Solutions</h2>
+        <div id="ai-output">
+          <div class="ai-placeholder">
+            <i class="fas fa-lightbulb"></i>
+            <h3>AI Solutions Will Appear Here</h3>
+            <p>Click the "AI Solutions" button after loading city data to see location-specific recommendations.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://js.arcgis.com/4.30/"></script>
+  <script src="script.js"></script>
+</body>
+</html>
